@@ -96,24 +96,42 @@ class RepaymentController extends Controller
 
         $loan = $repayment->loan;
 
+        // Check if loan is full paid
         if ($loan && $loan->status === Loan::$FULL_PAID) {
             return response()->json([
                 'message' => 'Loan has been paid already'
             ]);
         }
 
+        // Check if repayment is paid
         if ($repayment->status === Repayment::$PAID) {
             return response()->json([
                 'message' => 'Repayment has been paid already'
             ]);
         }
 
+        // Update repayment to paid status
         $repayment->update([
             'payment_method' => $request->get('payment_method') ?? '',
             'note' => $request->get('note') ?? '',
             'paid_date' => Carbon::now(),
             'status' => Repayment::$PAID
         ]);
+
+        // Check if loan is full paid after make repayment
+        $loan = $repayment->loan;
+        if ($loan) {
+            $repayments = $loan->repayments;
+            $package = $loan->package;
+            $months = $package->months;
+
+            $paidRepayments = $repayments->where('status', Repayment::$PAID);
+
+            if (count($paidRepayments) === $months) {
+                $loan->status = Loan::$FULL_PAID;
+                $loan->save();
+            }
+        }
 
         return response()->json([
             'repayment' => [
