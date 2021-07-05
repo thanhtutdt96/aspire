@@ -1,62 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Documentation
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+This project using Laravel 8, developed with PHP 7.4 and MySQL 5.7. The API authentication manipulates
+by [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum#introduction)
+with auth routes based on [Laravel Breeze](https://laravel.com/docs/8.x/starter-kits#laravel-breeze).
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Setup on Local
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. Rename the `.env.example` to `.env`, adjust the setting to match the MySQL setting on the local.
+2. Run these commands to install necessaries project libraries:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```angular2html
+composer install
+yarn install
+yarn dev
+```
 
-## Learning Laravel
+3. Navigate to project folder, then run the following commands, to generate project keys, create tables and seed data:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```angular2html
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+4. Run `yarn serve` to serve the project.
 
-## Laravel Sponsors
+## Using the API
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+The api routes were declare in `routes/api.php`. The API endpoint should have the following
+pattern `{API_URL}/api/v1/{API_NAME}`. For example on my local it will be `http://localhost:8000/api/v1/users` to get
+the user list.
 
-### Premium Partners
+### Using with [Postman](https://www.postman.com/downloads/)
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+The easiest way to run all the API collections, is using Postman. There are 2 exported files for Postman collection and
+environment, located in `postman` folder. To import it to Postman, following
+this [guide](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/). After importing
+everything, the API Collections should be ready to be use. You can also adjust the api url settings, by clicking the eye
+settings on the top right side of Postman.
 
-## Contributing
+Also, please noted to always run the Login API first, before running any of those API collections.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Using with other tools
 
-## Code of Conduct
+Here are the list of available API in the project. Please, noted to always run the Login API first, and include the
+token from login to `Authorization`
+header in every API requests. For example: `Authorization: Bearer 6|24yDDUDFFSUeTQtTGrAgCmRIPqk9sFgUZPSKE9sK`
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1. **Login (email: thanhtutdt96@gmail.com / pass: YF4pfsHx)**
+    - Endpoint: `/api/login`
+    - Method: POST
+    - Parameter:
+        - email
+        - password
+    - Return:
+        - token
 
-## Security Vulnerabilities
+2. **Get Users**
+    - Endpoint: `/api/v1/users`
+    - Method: GET
+    - Return:
+        - users
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+3. **Add User**
+    - Endpoint: `/api/v1/users`
+    - Method: POST
+    - Parameter:
+        - email
+        - name
+        - identity_number
+        - birthday
+        - gender
+        - address
+        - city
+        - phone
+        - password
+    - Return:
+        - message
 
-## License
+4. **Show User**
+    - Endpoint: `/api/v1/users/{id}`
+    - Method: GET
+    - Return:
+        - user
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+5. **Delete User**
+    - Endpoint: `/api/v1/users/{id}`
+    - Method: DELETE
+    - Return:
+        - message
+
+6. **Get Loans**
+    - Endpoint: `/api/v1/loans`
+    - Method: GET
+    - Return:
+        - loans
+
+7. **Add Loan**
+    - Endpoint: `/api/v1/loans`
+    - Method: POST
+    - Parameter:
+        - user_id
+        - package_id
+        - purpose
+        - base_amount
+    - Return:
+        - message
+
+8. **Show Loan**
+    - Endpoint: `/api/v1/loans/{id}`
+    - Method: GET
+    - Return:
+        - loan
+
+9. **Update Loan**
+    - Endpoint: `/api/v1/loans/{id}`
+    - Method: PUT
+    - Parameter:
+        - status
+    - Return:
+        - message
+
+10. **Delete Loan**
+    - Endpoint: `/api/v1/loans/{id}`
+    - Method: DELETE
+    - Return:
+        - message
+
+11. **Get Repayments**
+    - Endpoint: `/api/v1/repayments`
+    - Method: GET
+    - Return:
+        - repayments
+
+12. **Show Repayment**
+    - Endpoint: `/api/v1/repayments/{id}`
+    - Method: GET
+    - Return:
+        - repayment
+
+9. **Update Repayment**
+    - Endpoint: `/api/v1/repayments/{id}`
+    - Method: PUT
+    - Parameter:
+        - status
+    - Return:
+        - message
+
+10. **Delete Repayment**
+    - Endpoint: `/api/v1/repayments/{id}`
+    - Method: DELETE
+    - Return:
+        - message
+
+11. **Make Repayment**
+    - Endpoint: `/api/v1/makeRepayment/{id}`
+    - Method: POST
+    - Parameter:
+        - payment_method
+        - note
+    - Return:
+        - repayment / message
+
+12. **Get Packages**
+    - Endpoint: `/api/v1/packages`
+    - Method: GET
+    - Return:
+        - packages
+
+13. **Add Package**
+    - Endpoint: `/api/v1/packages`
+    - Method: POST
+    - Parameter:
+        - interest_rate
+        - months
+        - arrangement_fee_rate
+        - description
+    - Return:
+        - message
+
+14. **Show Package**
+    - Endpoint: `/api/v1/packages/{id}`
+    - Method: GET
+    - Return:
+        - package
+
+15. **Update Package**
+    - Endpoint: `/api/v1/packages/{id}`
+    - Method: PUT
+    - Parameter:
+        - interest_rate
+        - months
+        - arrangement_fee_rate
+    - Return:
+        - message
+
+16. **Delete Package**
+    - Endpoint: `/api/v1/packages/{id}`
+    - Method: DELETE
+    - Return:
+        - message
+    
+

@@ -77,7 +77,8 @@ class PackageController extends Controller
         $validators = [
             'interest_rate' => 'numeric',
             'months' => 'numeric',
-            'arrangement_fee_rate' => 'numeric'
+            'arrangement_fee_rate' => 'numeric',
+            'enabled' => 'boolean'
         ];
 
         $validator = Validator::make($request->all(), $validators);
@@ -88,8 +89,15 @@ class PackageController extends Controller
                 'errors' => $validator->messages()
             ]);
         } else {
-            $loan = Package::findOrFail($id);
-            $loan->update($request->all());
+            $package = Package::findOrFail($id);
+
+            if (!$package->enabled) {
+                return response()->json([
+                    'message' => 'Package is not available'
+                ]);
+            }
+
+            $package->update($request->all());
         }
 
         return response()->json([
@@ -103,6 +111,12 @@ class PackageController extends Controller
     public function destroy($id)
     {
         $package = Package::findOrFail($id);
+
+        if (!$package->enabled) {
+            return response()->json([
+                'message' => 'Package is not available'
+            ]);
+        }
 
         $package->delete();
 

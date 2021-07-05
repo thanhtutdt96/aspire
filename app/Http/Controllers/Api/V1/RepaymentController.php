@@ -53,7 +53,8 @@ class RepaymentController extends Controller
             'amount' => 'numeric',
             'nth_payment' => 'numeric',
             'paid_date' => 'date',
-            'due_date' => 'date'
+            'due_date' => 'date',
+            'enabled' => 'boolean'
         ];
 
         $validator = Validator::make($request->all(), $validators);
@@ -65,6 +66,13 @@ class RepaymentController extends Controller
             ]);
         } else {
             $repayment = Repayment::findOrFail($id);
+
+            if (!$repayment->enabled) {
+                return response()->json([
+                    'message' => 'Repayment is not available'
+                ]);
+            }
+
             $repayment->update($request->all());
         }
 
@@ -79,6 +87,12 @@ class RepaymentController extends Controller
     public function destroy($id)
     {
         $repayment = Repayment::findOrFail($id);
+
+        if (!$repayment->enabled) {
+            return response()->json([
+                'message' => 'Repayment is not available'
+            ]);
+        }
 
         $repayment->delete();
 
@@ -95,6 +109,20 @@ class RepaymentController extends Controller
         $repayment = Repayment::findOrFail($id);
 
         $loan = $repayment->loan;
+
+        // Check if repayment is enabled
+        if (!$repayment->enabled) {
+            return response()->json([
+                'message' => 'Repayment is not available'
+            ]);
+        }
+
+        // Check if loan is enabled
+        if (!$loan->enabled) {
+            return response()->json([
+                'message' => 'Loan is not available'
+            ]);
+        }
 
         // Check if loan is full paid
         if ($loan && $loan->status === Loan::$FULL_PAID) {

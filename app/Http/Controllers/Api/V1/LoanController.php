@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Loan;
 use App\Models\Package;
 use App\Models\Repayment;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +49,20 @@ class LoanController extends Controller
             $baseAmount = $request->get('base_amount');
             $packageId = $request->get('package_id');
             $package = Package::find($packageId);
+            $user = User::find($request->get('user_id'));
+
+            if (!$user->enabled) {
+                return response()->json([
+                    'message' => 'User is not available'
+                ]);
+            }
+
+            if (!$package->enabled) {
+                return response()->json([
+                    'message' => 'Package is not available'
+                ]);
+            }
+
             $interestRate = $package->interest_rate / 100;
             $arrangementFeeRate = $package->arrangement_fee_rate / 100;
 
@@ -149,7 +164,8 @@ class LoanController extends Controller
             'total_amount' => 'numeric',
             'paid_amount' => 'numeric',
             'start_date' => 'date',
-            'end_date' => 'date'
+            'end_date' => 'date',
+            'enabled' => 'boolean'
         ];
 
         $validator = Validator::make($request->all(), $validators);
@@ -161,6 +177,13 @@ class LoanController extends Controller
             ]);
         } else {
             $loan = Loan::findOrFail($id);
+
+            if (!$loan->enabled) {
+                return response()->json([
+                    'message' => 'Loan is not available'
+                ]);
+            }
+
             $loan->update($request->all());
         }
 
@@ -193,6 +216,12 @@ class LoanController extends Controller
     public function destroy($id)
     {
         $loan = Loan::findOrFail($id);
+
+        if (!$loan->enabled) {
+            return response()->json([
+                'message' => 'Loan is not available'
+            ]);
+        }
 
         $loan->delete();
 
