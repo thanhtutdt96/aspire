@@ -1,0 +1,757 @@
+{
+	"info": {
+		"_postman_id": "19b63448-4fc9-4932-b2d9-50017fcf7127",
+		"name": "Aspire",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"ACCESS_TOKEN\", jsonData.data.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "thanhtutdt96@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "YF4pfsHx",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/login",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "tu@vietswiss.com",
+							"type": "text"
+						},
+						{
+							"key": "identity_number",
+							"value": "01234567890",
+							"type": "text"
+						},
+						{
+							"key": "birthday",
+							"value": "1996/05/09",
+							"type": "text"
+						},
+						{
+							"key": "gender",
+							"value": "male",
+							"type": "text"
+						},
+						{
+							"key": "address",
+							"value": "266/46 to hien thanh",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "HCM",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "0374263605",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin2010",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "Tu",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/users/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/users/2",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Loans",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/loans",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Loan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "package_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "purpose",
+							"value": "Buying house",
+							"type": "text"
+						},
+						{
+							"key": "base_amount",
+							"value": "5000000",
+							"type": "text"
+						},
+						{
+							"key": "start_date",
+							"value": "2021/07/03",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/loans",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Loan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/loans/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loans",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Loan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "status",
+							"value": "approved",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/loans/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loans",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Loan",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/loans/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"loans",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Repayments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/repayments",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"repayments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Repayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/repayments/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"repayments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Repayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/repayments/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"repayments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Repayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/repayments/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"repayments",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make Repayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "payment_method",
+							"value": "zalo",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/makeRepayment/2",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"makeRepayment",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Packages",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/packages",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"packages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show Package",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/packages/1",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"packages",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Package",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "interest_rate",
+							"value": "7",
+							"type": "text"
+						},
+						{
+							"key": "months",
+							"value": "12",
+							"type": "text"
+						},
+						{
+							"key": "arrangement_fee_rate",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "Loan packages for 12 months",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/packages",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"packages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Package",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "interest_rate",
+							"value": "8.5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{API_URL}}/api/v1/packages/3",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"packages",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Package",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/api/v1/packages/3",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"packages",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
