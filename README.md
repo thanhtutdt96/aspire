@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project using Laravel 8, developed with PHP 7.4 and MySQL 5.7. The API authentication manipulates
+This project was using Laravel 8, developed with PHP 7.4 and MySQL 5.7. The API authentication manipulates
 by [Laravel Sanctum](https://laravel.com/docs/8.x/sanctum#introduction)
 with auth routes based on [Laravel Breeze](https://laravel.com/docs/8.x/starter-kits#laravel-breeze).
 
@@ -29,7 +29,7 @@ php artisan db:seed
 
 ## Using the API
 
-The api routes were declare in `routes/api.php`. The API endpoint should have the following
+The api routes were declared in `routes/api.php`. The API endpoint should have the following
 pattern `{API_URL}/api/v1/{API_NAME}`. For example on my local it will be `http://localhost:8000/api/v1/users` to get
 the user list.
 
