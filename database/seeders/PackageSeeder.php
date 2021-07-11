@@ -27,27 +27,27 @@ class PackageSeeder extends Seeder
             [
                 'id' => 1,
                 'interest_rate' => 7,
-                'months' => 12,
+                'weeks' => 12,
                 'arrangement_fee_rate' => 2,
-                'description' => 'Loan package for 12 months',
+                'description' => 'Loan package for 12 weeks',
                 'updated_at' => Carbon::now(),
                 'created_at' => Carbon::now()
             ],
             [
                 'id' => 2,
                 'interest_rate' => 7.2,
-                'months' => 18,
+                'weeks' => 18,
                 'arrangement_fee_rate' => 2.5,
-                'description' => 'Loan package for 18 months',
+                'description' => 'Loan package for 18 weeks',
                 'updated_at' => Carbon::now(),
                 'created_at' => Carbon::now()
             ],
             [
                 'id' => 3,
                 'interest_rate' => 7.5,
-                'months' => 24,
+                'weeks' => 24,
                 'arrangement_fee_rate' => 3,
-                'description' => 'Loan package for 24 months',
+                'description' => 'Loan package for 24 weeks',
                 'updated_at' => Carbon::now(),
                 'created_at' => Carbon::now()
             ],

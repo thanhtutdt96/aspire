@@ -8,6 +8,7 @@ use App\Models\Repayment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class RepaymentController extends Controller
 {
@@ -33,7 +34,7 @@ class RepaymentController extends Controller
         if (!$repayment->enabled) {
             return response()->json([
                 'message' => 'Repayment is not available'
-            ]);
+            ], 403);
         }
 
         return response()->json([
@@ -61,16 +62,16 @@ class RepaymentController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             $repayment = Repayment::findOrFail($id);
 
             if (!$repayment->enabled) {
                 return response()->json([
                     'message' => 'Repayment is not available'
-                ]);
+                ], 403);
             }
 
             $repayment->update($request->all());
@@ -91,7 +92,7 @@ class RepaymentController extends Controller
         if (!$repayment->enabled) {
             return response()->json([
                 'message' => 'Repayment is not available'
-            ]);
+            ], 403);
         }
 
         $repayment->delete();
@@ -114,28 +115,28 @@ class RepaymentController extends Controller
         if (!$repayment->enabled) {
             return response()->json([
                 'message' => 'Repayment is not available'
-            ]);
+            ], 403);
         }
 
         // Check if loan is enabled
         if (!$loan->enabled) {
             return response()->json([
                 'message' => 'Loan is not available'
-            ]);
+            ], 403);
         }
 
         // Check if loan is full paid
         if ($loan && $loan->status === Loan::$FULL_PAID) {
             return response()->json([
                 'message' => 'Loan has been paid already'
-            ]);
+            ], 403);
         }
 
         // Check if repayment is paid
         if ($repayment->status === Repayment::$PAID) {
             return response()->json([
                 'message' => 'Repayment has been paid already'
-            ]);
+            ], 403);
         }
 
         // Update repayment to paid status
@@ -151,11 +152,11 @@ class RepaymentController extends Controller
         if ($loan) {
             $repayments = $loan->repayments;
             $package = $loan->package;
-            $months = $package->months;
+            $weeks = $package->weeks;
 
             $paidRepayments = $repayments->where('status', Repayment::$PAID);
 
-            if (count($paidRepayments) === $months) {
+            if (count($paidRepayments) === $weeks) {
                 $loan->status = Loan::$FULL_PAID;
                 $loan->save();
             }

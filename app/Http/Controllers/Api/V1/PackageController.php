@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Package;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class PackageController extends Controller
 {
@@ -29,7 +30,7 @@ class PackageController extends Controller
         // Validate request data
         $validators = [
             'interest_rate' => 'required|numeric',
-            'months' => 'required|numeric',
+            'weeks' => 'required|numeric',
             'arrangement_fee_rate' => 'required|numeric'
         ];
 
@@ -37,9 +38,9 @@ class PackageController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             // Create new package
             $package = Package::create($request->all());
@@ -60,7 +61,7 @@ class PackageController extends Controller
         if (!$package->enabled) {
             return response()->json([
                 'message' => 'Package is not available'
-            ]);
+            ], 403);
         }
 
         return response()->json([
@@ -76,7 +77,7 @@ class PackageController extends Controller
         // Validate request data
         $validators = [
             'interest_rate' => 'numeric',
-            'months' => 'numeric',
+            'weeks' => 'numeric',
             'arrangement_fee_rate' => 'numeric',
             'enabled' => 'boolean'
         ];
@@ -85,16 +86,16 @@ class PackageController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             $package = Package::findOrFail($id);
 
             if (!$package->enabled) {
                 return response()->json([
                     'message' => 'Package is not available'
-                ]);
+                ], 403);
             }
 
             $package->update($request->all());
@@ -115,7 +116,7 @@ class PackageController extends Controller
         if (!$package->enabled) {
             return response()->json([
                 'message' => 'Package is not available'
-            ]);
+            ], 403);
         }
 
         $package->delete();

@@ -175,7 +175,7 @@ header in every API requests. For example: `Authorization: Bearer 6|24yDDUDFFSUe
     - Method: POST
     - Parameter:
         - interest_rate
-        - months
+        - weeks
         - arrangement_fee_rate
         - description
     - Return:
@@ -192,7 +192,7 @@ header in every API requests. For example: `Authorization: Bearer 6|24yDDUDFFSUe
     - Method: PUT
     - Parameter:
         - interest_rate
-        - months
+        - weeks
         - arrangement_fee_rate
     - Return:
         - message

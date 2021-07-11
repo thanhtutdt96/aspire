@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -25,6 +26,7 @@ class UserController extends Controller
 
     /**
      * Create a new user
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -45,9 +47,9 @@ class UserController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             // Hash the user password
             $request->merge([
@@ -73,7 +75,7 @@ class UserController extends Controller
         if(!$user->enabled) {
             return response()->json([
                 'message' => 'User is not available'
-            ]);
+            ], 403);
         }
 
         return response()->json([

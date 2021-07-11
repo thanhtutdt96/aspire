@@ -10,6 +10,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class LoanController extends Controller
 {
@@ -41,9 +42,9 @@ class LoanController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             $startDate = $request->get('start_date') ?? Carbon::now();
             $baseAmount = $request->get('base_amount');
@@ -54,13 +55,13 @@ class LoanController extends Controller
             if (!$user->enabled) {
                 return response()->json([
                     'message' => 'User is not available'
-                ]);
+                ], 403);
             }
 
             if (!$package->enabled) {
                 return response()->json([
                     'message' => 'Package is not available'
-                ]);
+                ], 403);
             }
 
             $interestRate = $package->interest_rate / 100;
@@ -68,7 +69,7 @@ class LoanController extends Controller
 
             $request->merge([
                 'start_date' => $startDate,
-                'end_date' => $this->calculateEndDate($startDate, $package->months),
+                'end_date' => $this->calculateEndDate($startDate, $package->weeks),
                 'total_amount' => $this->calculateTotalAmount($baseAmount, $interestRate, $arrangementFeeRate),
                 'status' => Loan::$INIT
             ]);
@@ -94,9 +95,9 @@ class LoanController extends Controller
     /**
      * Calculate loan end date
      */
-    protected function calculateEndDate($startDate, $months)
+    protected function calculateEndDate($startDate, $weeks)
     {
-        return Carbon::parse($startDate)->addMonths($months);
+        return Carbon::parse($startDate)->addWeeks($weeks);
     }
 
     /**
@@ -119,16 +120,16 @@ class LoanController extends Controller
         $arrangementFeeRate = $package->arrangement_fee_rate / 100;
 
         $totalAmount = $this->calculateTotalAmount($loan->base_amount, $arrangementFeeRate, $interestedRate);
-        $monthlyRepayment = round($totalAmount / $package->months);
+        $weeklyRepayment = round($totalAmount / $package->weeks);
 
         $startDate = Carbon::parse($loan->start_date);
 
-        for ($i = 1; $i <= $package->months; $i++) {
-            $startDate->addMonth();
+        for ($i = 1; $i <= $package->weeks; $i++) {
+            $startDate->addWeek();
             $result[] = Repayment::create([
                 'loan_id' => $loan->id,
                 'user_id' => $loan->user->id,
-                'amount' => $this->roundMoney($monthlyRepayment),
+                'amount' => $this->roundMoney($weeklyRepayment),
                 'nth_payment' => $i,
                 'due_date' => $startDate,
                 'status' => Repayment::$UNPAID
@@ -172,9 +173,9 @@ class LoanController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            return response()->json([
+            throw new ValidationException($validator, response()->json([
                 'errors' => $validator->messages()
-            ]);
+            ]));
         } else {
             $loan = Loan::findOrFail($id);
 
@@ -202,7 +203,7 @@ class LoanController extends Controller
         if (!$loan->enabled) {
             return response()->json([
                 'message' => 'Loan is not available'
-            ]);
+            ], 403);
         }
 
         return response()->json([
@@ -220,7 +221,7 @@ class LoanController extends Controller
         if (!$loan->enabled) {
             return response()->json([
                 'message' => 'Loan is not available'
-            ]);
+            ], 403);
         }
 
         $loan->delete();

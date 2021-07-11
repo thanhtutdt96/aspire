@@ -16,7 +16,7 @@ class CreatePackagesTable extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->float('interest_rate');
-            $table->integer('months');
+            $table->integer('weeks');
             $table->float('arrangement_fee_rate')->default(0);
             $table->text('description')->nullable();
             $table->boolean('enabled')->default(1);
