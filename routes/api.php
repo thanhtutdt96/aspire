@@ -28,4 +28,5 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'App\Http\Control
     Route::apiResource('repayments', 'RepaymentController');
     Route::post('/make-repayment/{id}', [RepaymentController::class, 'makeRepayment']);
     Route::get('/get-loans', [LoanController::class, 'getLoansByUser']);
+    Route::post('/approve-loan/{id}', [LoanController::class, 'approveLoan']);
 });

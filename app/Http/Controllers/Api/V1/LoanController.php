@@ -72,7 +72,7 @@ class LoanController extends Controller
                 'start_date' => $startDate,
                 'end_date' => $this->calculateEndDate($startDate, $package->weeks),
                 'total_amount' => $this->calculateTotalAmount($baseAmount, $interestRate, $arrangementFeeRate),
-                'status' => Loan::$APPROVED
+                'status' => Loan::$INIT
             ]);
 
             // Create new loan
@@ -232,7 +232,8 @@ class LoanController extends Controller
         ]);
     }
 
-    public function getLoansByUser() {
+    public function getLoansByUser()
+    {
         $user = Auth::user();
         $repayments = [];
 
@@ -240,6 +241,17 @@ class LoanController extends Controller
 
         return response()->json([
             'loans' => $loans
+        ]);
+    }
+
+    public function approveLoan($id)
+    {
+        $loan = Loan::findOrFail($id);
+        $loan->status = Loan::$APPROVED;
+        $loan->save();
+
+        return response()->json([
+            'message' => 'Loan has been approved successfully'
         ]);
     }
 }

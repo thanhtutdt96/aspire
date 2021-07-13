@@ -51,7 +51,7 @@ class User extends Authenticatable
     ];
 
     public function loans() {
-        return $this->hasMany(Loan::class)->where('loans.status', Loan::$APPROVED)->with('repayments');
+        return $this->hasMany(Loan::class)->with('repayments');
     }
 
     public function repayments() {
