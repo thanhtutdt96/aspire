@@ -25,7 +25,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-4. Run `yarn serve` to serve the project.
+4. Run `php artisan serve` to serve the project.
 
 ## Using the API
 
