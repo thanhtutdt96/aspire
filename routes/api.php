@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\V1\LoanController;
 use App\Http\Controllers\Api\V1\RepaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,5 +26,6 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'App\Http\Control
     Route::apiResource('loans', 'LoanController');
     Route::apiResource('packages', 'PackageController');
     Route::apiResource('repayments', 'RepaymentController');
-    Route::post('/makeRepayment/{id}', [RepaymentController::class, 'makeRepayment']);
+    Route::post('/make-repayment/{id}', [RepaymentController::class, 'makeRepayment']);
+    Route::get('/get-loans', [LoanController::class, 'getLoansByUser']);
 });

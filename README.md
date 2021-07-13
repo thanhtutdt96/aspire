@@ -156,7 +156,7 @@ header in every API requests. For example: `Authorization: Bearer 6|24yDDUDFFSUe
         - message
 
 11. **Make Repayment**
-    - Endpoint: `/api/v1/makeRepayment/{id}`
+    - Endpoint: `/api/v1/make-repayment/{id}`
     - Method: POST
     - Parameter:
         - payment_method

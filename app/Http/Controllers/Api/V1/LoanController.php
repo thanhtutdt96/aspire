@@ -9,6 +9,7 @@ use App\Models\Repayment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -35,16 +36,16 @@ class LoanController extends Controller
         $validators = [
             'user_id' => 'required|exists:users,id',
             'package_id' => 'required|exists:packages,id',
-            'base_amount' => 'required|numeric',
+            'base_amount' => 'required|numeric|min:1000000',
         ];
 
         $validator = Validator::make($request->all(), $validators);
 
         // Return validation results
         if ($validator->fails()) {
-            throw new ValidationException($validator, response()->json([
+            return response()->json([
                 'errors' => $validator->messages()
-            ]));
+            ], 422);
         } else {
             $startDate = $request->get('start_date') ?? Carbon::now();
             $baseAmount = $request->get('base_amount');
@@ -71,7 +72,7 @@ class LoanController extends Controller
                 'start_date' => $startDate,
                 'end_date' => $this->calculateEndDate($startDate, $package->weeks),
                 'total_amount' => $this->calculateTotalAmount($baseAmount, $interestRate, $arrangementFeeRate),
-                'status' => Loan::$INIT
+                'status' => Loan::$APPROVED
             ]);
 
             // Create new loan
@@ -173,9 +174,9 @@ class LoanController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            throw new ValidationException($validator, response()->json([
+            return response()->json([
                 'errors' => $validator->messages()
-            ]));
+            ], 422);
         } else {
             $loan = Loan::findOrFail($id);
 
@@ -228,6 +229,17 @@ class LoanController extends Controller
 
         return response()->json([
             'message' => 'Loan has been deleted successfully'
+        ]);
+    }
+
+    public function getLoansByUser() {
+        $user = Auth::user();
+        $repayments = [];
+
+        $loans = $user->loans;
+
+        return response()->json([
+            'loans' => $loans
         ]);
     }
 }

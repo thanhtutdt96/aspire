@@ -47,9 +47,9 @@ class UserController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            throw new ValidationException($validator, response()->json([
+            return response()->json([
                 'errors' => $validator->messages()
-            ]));
+            ], 422);
         } else {
             // Hash the user password
             $request->merge([

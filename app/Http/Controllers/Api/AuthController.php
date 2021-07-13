@@ -42,8 +42,11 @@ class AuthController extends Controller
             return $this->error('Credentials not match', 401);
         }
 
+        $user = auth()->user();
+
         return $this->success([
-            'token' => auth()->user()->createToken('API Token')->plainTextToken
+            'token' => $user->createToken('API Token')->plainTextToken,
+            'user' => $user
         ]);
     }
 

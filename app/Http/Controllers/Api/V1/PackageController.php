@@ -38,9 +38,9 @@ class PackageController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            throw new ValidationException($validator, response()->json([
+            return response()->json([
                 'errors' => $validator->messages()
-            ]));
+            ], 422);
         } else {
             // Create new package
             $package = Package::create($request->all());
@@ -86,9 +86,9 @@ class PackageController extends Controller
 
         // Return validation results
         if ($validator->fails()) {
-            throw new ValidationException($validator, response()->json([
+            return response()->json([
                 'errors' => $validator->messages()
-            ]));
+            ], 422);
         } else {
             $package = Package::findOrFail($id);
 
