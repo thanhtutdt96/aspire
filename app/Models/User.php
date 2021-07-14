@@ -55,6 +55,6 @@ class User extends Authenticatable
     }
 
     public function repayments() {
-        return $this->hasMany(Repayment::class);
+        return $this->hasMany(Repayment::class)->orderBy('nth_payment');
     }
 }
